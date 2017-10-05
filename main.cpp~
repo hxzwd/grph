@@ -1,0 +1,504 @@
+#include "main.hpp"
+
+std::vector<std::string> Symbolic_1, Symbolic_2;
+std::vector<bool> Flags = {true, true, true, true, true, true, true, true, true, true};
+
+
+void RenderScene(void)
+{
+	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+	glClearDepth(1.0);
+
+/*
+*/	
+	DrawLine(400, 300, 300, 0, {255, 0, 0});
+	DrawLine(400, 300, 400, 0, {0, 255, 0});
+	DrawLine(200, 400, 250, 350, {255, 0, 0});
+	DrawLine(300, 550, 600, 500, {0, 255, 0});
+	DrawLine(800, 100, 400, 200, {0, 0, 255});
+	DrawLine(450, 50, 400, 300, {255, 255, 255});
+	DrawLine(400, 300, 450, 250, {255, 255, 255});
+	DrawLine(400, 300, 350, 25, {255, 255, 255});
+	DrawLine(350, 350, 100, 300, {255, 255, 0});
+	DrawLine(350, 350, 250, 250, {0, 255, 255});
+	DrawLine(400, 300, 300, 550, {255, 0, 255});
+	DrawLine(400, 300, 50, 350, WHITE);
+	DrawPoly({0, 0, 100, 0, 50, 100}, GREEN, true);
+	DrawSquareN(100, 100, 10, GREEN, 0);
+	DrawPoly({-100, -100, -200, -100, -200, 0, -100, 0}, BLUE, true);
+	Draw_0({-100, 100, -300, 200}, 10, WHITE, CYAN, 0x0, true);
+	DrawLFunI([=](int x)->int { return 2 * x; }, {-50, 50}, RED);
+	DrawPoly({50, -50, 50, 50, -50, 50, -50, -50}, MAGENTA, true);
+	Draw_2({-100, 100, -300, 200}, 10, WHITE, CYAN, 0x1, true);
+	Draw_2({0, -200, 300, -100}, 2, GREEN, BLUE, 0x0, true);
+	Draw_2({0, -100, 300, -200}, 20, RED, YELLOW, 0x0, true);
+	
+	double x, y;
+	DrawLineN(-100, -200, -100, 200, BLUE);
+	DrawLineN(100, -200, 100, 200, BLUE);
+	IntersectType type = CROSS(-100, -200, -100, 200, 100, -200, 100, 200, &x, &y);
+	std::cout << Symbolic_2[type] << "\n";
+	DrawLineN(50, 100, 100, 200, BLUE);
+	DrawLineN(-100, 200, 100, -200, BLUE);
+	IntersectType type = CROSS(50, 100, 100, 200, -100, 200, 100, -200, &x, &y);
+	std::cout << Symbolic_2[type] << "\n";
+/*	
+	QuadCaps({-100, 100, -300, 200}, 10, WHITE, CYAN, 0x1, true);	
+	FlatCaps({100, 0, 200, 200}, 10, RED, 0x1, true);
+
+	EvenOdd({-50, -50, 50, -50, 0, 50}, GREEN, true);
+	EvenOdd({100, 100, 150, 100, 150, 150, 100, 150}, RED, true);
+	EvenOdd({-100, 0, -150, 0, -200, 50, -125, 100}, BLUE, true); 
+/*
+	DrawText("Hello", 300, -200, true, WHITE, GLUT_BITMAP_HELVETICA_12);
+
+	EvenOdd({-50, -50, 50, -50, 0, 50}, GREEN, true);
+	EvenOdd({100, 100, 150, 100, 150, 150, 100, 150}, RED, true);
+	EvenOdd({-100, 0, -150, 0, -200, 50, -125, 100}, BLUE, true); 
+/*
+	NZW({-50, -50, 50, -50, 0, 50}, GREEN, true);
+	NZW({100, 100, 150, 100, 150, 150, 100, 150}, RED, true);
+	NZW({-100, 0, -150, 0, -200, 50, -125, 100}, BLUE, true);
+
+
+	
+	QuadCaps({-100, 100, -300, 200}, 10, WHITE, CYAN, 0x1, true);	
+	FlatCaps({100, 0, 200, 200}, 10, RED, 0x1, true);
+
+	NamedPointRN(300, -200, RED, WHITE);
+	NamedPointLN(250, -250, RED, WHITE);
+
+	NamedLineN(300, -250, 250, -200, WHITE, RED);
+
+	NZW({-50, -50, 50, -50, 0, 50}, GREEN, true);
+	NZW({100, 100, 150, 100, 150, 150, 100, 150}, RED, true);
+	NZW({-100, 0, -150, 0, -200, 50, -125, 100}, BLUE, true);
+/*
+	DrawBezier2({-300, 200, -250, 200, -275, 250}, MAGENTA, true);
+
+	DrawBezier2({-100, 0, 0, 100, 100, 0}, WHITE, true);
+	ClearScreen(BLACK);
+	DrawBezier2({-300, 200, -250, 200, -200, 150}, RED, true);
+
+	DrawCircle(300, 200, 50, GREEN);
+
+	{
+	DrawPoly({-100, 0, -50, 50, -75, 50, -75, 100, -100, 0}, BLUE, true);
+	if(IsConvex({-100, 0, -50, 50, -75, 50, -75, 100, -100, 0}))
+		std::cout << "1 Convex\n";
+	else
+		std::cout << "1 Not Convex\n";
+
+	DrawPoly({-50, 0, 50, 0, 0, 50}, GREEN, true);
+	if(IsConvex({-50, 0, 50, 0, 0, 50}))
+		std::cout << "2 Convex\n";
+	else
+		std::cout << "2 Not Convex\n";
+
+
+	DrawPoly({200, -100, 200, -200, 250, -250, 300, -200, 300, -100}, GREEN, true);
+	if(IsConvex({200, -100, 200, -200, 250, -250, 300, -200, 300, -100}))
+		std::cout << "3 Convex\n";
+	else
+		std::cout << "3 Not Convex\n";
+
+	DrawPoly({0, 0, 50, 50, -50, -100, 50, 50, 100, 100, 0, 50}, RED, true);
+	if(IsConvex({200, -100, 200, -200, 250, -250, 300, -200, 300, -100}))
+		std::cout << "4 Convex\n";
+	else
+		std::cout << "4 Not Convex\n";
+
+	if(IsConvex(DrawSquareN(-200, 200, 50, RED, 0)))
+		std::cout << "5 Convex\n";
+	else
+		std::cout << "5 Not Convex\n";
+}
+
+
+{
+	DrawPoly({-100, 0, -50, 50, -75, 50, -75, 100}, BLUE, true);
+	if(Flags[0])
+	{
+	if(IsConvex2({-100, 0, -50, 50, -75, 50, -75, 100}))
+	{
+		std::cout << "1 Convex\n";
+	}
+	else
+	{
+		std::cout << "1 Not Convex\n";
+	}
+		Flags[0] = false;
+	}
+	
+
+	DrawPoly({-50, 0, 50, 0, 0, 50}, GREEN, true);
+	if(Flags[1])
+	{
+	if(IsConvex2({-50, 0, 50, 0, 0, 50}))
+	{
+		std::cout << "2 Convex\n";
+	}
+	else
+	{
+		std::cout << "2 Not Convex\n";
+	}
+		Flags[1] = false;
+	}
+
+	DrawPoly({200, -100, 200, -200, 250, -250, 300, -200, 300, -100}, GREEN, true);
+	if(Flags[2])
+	{
+
+	if(IsConvex2({200, -100, 200, -200, 250, -250, 300, -200, 300, -100}))
+	{
+		std::cout << "3 Convex\n";
+	}
+	else
+	{
+		std::cout << "3 Not Convex\n";
+	}
+		Flags[2] = false;
+	}
+	
+
+	DrawPoly({0, 0, 50, 50, -50, -100, 50, 50, 100, 100, 0, 50}, RED, true);
+	if(Flags[3])
+	{
+	if(IsConvex2({0, 0, 50, 50, -50, -100, 50, 50, 100, 100, 0, 50}))
+	{
+		std::cout << "4 Convex\n";
+	}
+	else
+	{
+		std::cout << "4 Not Convex\n";
+	}
+		Flags[3] = false;
+	}
+	
+	
+	DrawSquareN(-200, 200, 50, RED, 0);
+	if(Flags[4])
+	{
+	if(IsConvex2(DrawSquareN(-200, 200, 50, RED, 0)))
+	{
+		std::cout << "5 Convex\n";
+	}
+	else
+	{
+		std::cout << "5 Not Convex\n";
+	}
+		Flags[4] = false;
+	}
+}
+
+
+
+/*
+	if(IsConvex2(DrawSquareN(0, 0, 100, GREEN, M_PI/4.0)))
+	{
+		std::cout << "0 Convex\n";
+	}
+	else
+	{
+		std::cout << "0 Not Convex\n";
+	}
+
+	DrawPoly({-50, -100, -100, -50, -100, 50, -50, 100, 50, 100, 100, 50, 100, -50, 50, -100}, RED, true);
+	if(IsConvex2({-50, -100, -100, -50, -100, 50, -50, 100, 50, 100, 100, 50, 100, -50, 50, -100}))
+	{
+		std::cout << "1 Convex\n";
+	}
+	else
+	{
+		std::cout << "1 Not Convex\n";
+	}
+
+	DrawPoly({-50, -100, -100, -50, -100, 50, -50, 100, 50, 100, 100, 50, 100, -50, 50, -100, 0, -50}, MAGENTA, true);
+	if(IsConvex2({-50, -100, -100, -50, -100, 50, -50, 100, 50, 100, 100, 50, 100, -50, 50, -100, 0, -50}))
+	{
+		std::cout << "2 Convex\n";
+	}
+	else
+	{
+		std::cout << "2 Not Convex\n";
+	}
+/*
+
+	DrawPoly({-50, -100, -100, -50, -100, 50, -50, 100, 50, 100, 100, 50, 100, -50, 50, -100, 0, -50}, GREEN, true);
+	if(IsSimple({-50, -100, -100, -50, -100, 50, -50, 100, 50, 100, 100, 50, 100, -50, 50, -100, 0, -50}))
+	{
+		std::cout << "0 Simple\n";
+	}
+	else
+	{
+		std::cout << "0 Not Simple\n";
+	} 
+
+	DrawPoly({-300, 0, -200, 0, -300, 200, -200, 200}, RED, true);
+	if(IsSimple({-300, 0, -200, 0, -300, 200, -200, 200}))
+	{
+		std::cout << "1 Simple\n";
+	}
+	else
+	{
+		std::cout << "1 Not Simple\n";
+	}
+	
+	DrawBarcodeLineN(0, 0, 200, 200, 10.0, CYAN);
+	NamedPointRN(100, 100, WHITE, WHITE); */
+
+	glutSwapBuffers();
+}
+
+int main(int argc, char **argv)
+{
+	
+	Symbolic_1 = {  "NONE", "LEFT", "RIGHT", "BEYOND", "BEHIND", "BETWEEN", "ORIGIN", "DESTINATION" };
+	Symbolic_2 = { "COLLINEAR", "PARALLEL", "SKEW", "SKEW_CROSS", "SKEW_NO_CROSS" };
+	
+
+
+	std::string WindowName(WINDOW_NAME);
+
+	glutInit(&argc, argv);
+	glutInitDisplayMode(GLUT_DOUBLE | GLUT_DEPTH | GLUT_RGBA);
+	glutInitWindowPosition(WINDOW_POSITION_ONE, WINDOW_POSITION_TWO);
+	glutInitWindowSize(WINDOW_SIZE_ONE, WINDOW_SIZE_TWO);
+	glutCreateWindow(WindowName.c_str());
+	
+	glutMotionFunc(ActiveMouseFunction);
+	glutPassiveMotionFunc(PassiveMouseFunction);
+	glutMouseFunc(MouseButton);
+	
+
+	SetUserSettings();
+
+	glutDisplayFunc(RenderScene);
+	glutMainLoop();
+
+	return 0;
+}
+
+
+/*
+void DrawLine(int x1, int y1, int x2, int y2, const std::vector<int> color = { 255, 255, 255 })
+{
+	double Error = -0.5;
+	int deltax = (int)std::abs(x2 - x1);
+	int deltay = (int)std::abs(y2 - y1);
+	int x;
+	int y;
+	int sign1 = 1, sign2 = 1, sign3 = 1;
+	if(x1 < x2) { x = x1; y = y1; }
+	else { x = x2; y = y2; }
+
+
+	if(deltax == 0 && deltay != 0)
+	{	
+		y = std::min(y1, y2);
+		for(int i = 0; i <= deltay; i++, y++)
+			SetPixel(x1, y, color);
+		return;
+	}
+
+	if(deltax == 0 && deltay == 0)
+	{
+		SetPixel(x1, y1, color);
+	}
+
+	if(x1 * y1 < 0 && x2 * y2 < 0)
+	{
+		if(x1 <= 0 && x2 <= 0)
+		{
+			x = -std::max(std::abs(x1), std::abs(x2));
+			if(x == x1) y = y1;
+			if(x == x2) y = y2;
+			sign1 = -1;
+			sign2 = 1;
+		}
+		if(y1 <= 0 && y2 <= 0)
+		{
+			x = std::min(x1, x2);
+			if(x == x1) y = y1;
+			if(x == x2) y = y2;
+			sign1 = -1;
+			sign2 = 1;
+			sign3 = -1;
+		}	
+	}
+
+	double d = (double)deltay/(double)deltax;
+	
+	SetPixel(x1, y1, color);
+
+	for(int counter = 1; counter < deltax; counter++)
+	{
+		x = x + sign2*1;
+		Error = Error + d;
+		if(Error < 0) y = y;
+		if(Error >= 0)
+		{
+			y = y + sign1*1;
+			Error = Error - 1;
+		}
+		SetPixel(x, y, color);
+	
+	}
+
+	SetPixel(x2, y2, color);
+}
+
+DrawLine(200, 400, 250, 350, {255, 0, 0});
+	DrawLine(300, 550, 600, 500, {0, 255, 0});
+	DrawLine(800, 100, 400, 200, {0, 0, 255});
+	DrawLine(450, 50, 400, 300, {255, 255, 255});
+	DrawLine(400, 300, 450, 250, {255, 255, 255});
+	DrawLine(400, 300, 350, 25, {255, 255, 255});
+	DrawLine(350, 350, 100, 300, {255, 255, 0});
+	DrawLine(350, 350, 250, 250, {0, 255, 255});
+	DrawLine(400, 300, 300, 550, {255, 0, 255});
+	DrawLine(400, 300, 50, 350, WHITE);
+
+void DrawLine(int x1, int y1, int x2, int y2, const std::vector<int> color = { 255, 255, 255 })
+{
+	double Error = -0.5;
+	int deltax = x2 - x1;
+	int deltay = y2 - y1;
+	int x, y;
+	int DY;
+	
+	if(deltax == 0 && deltay == 0)
+	{
+		SetPixel(x1, y1, color);
+		return;
+	}
+
+	if(deltax == 0)
+	{
+		x = x1;
+		y = std::min(y1, y2);
+		
+		for(int i = 0; i <= std::abs(deltay); i++, y++)
+			SetPixel(x, y, color);
+		
+		return;
+	}
+
+	if(deltay == 0)
+	{
+		y = y1;
+		x = std::min(x1, x2);
+		
+		for(int i = 0; i <= std::abs(deltax); i++, x++)
+			SetPixel(x, y, color);
+		
+		return;
+	}
+	
+	x = std::min(x1, x2);
+	if(x == x1) { y = y1; DY = -y2 + y1; }
+	else	{ y = y2; DY = -y1 + y2; }
+
+	double d = (double)DY/(double)(std::max(x1, x2) - std::min(x1, x2));
+	
+	
+	if(d > 0.0f && d <= 1.0f)
+	{
+
+		for(int i = 0; i <= std::abs(deltax); i++)
+		{
+			Error = Error + d;
+			if(Error < 0) y = y;
+			if(Error >= 0)
+			{
+				y = y - 1;
+				Error = Error - 1;
+			}
+			SetPixel(x, y, color);
+			x = x + 1;
+		}
+		return;
+	}
+
+
+	if(d > 1.0f)
+	{
+		y = std::max(y1, y2);
+		if(y == y1) x = x1;
+		else x = x2;
+
+		for(int i = 0; i <= std::abs(deltay); i++)
+		{
+			Error = Error + 1.0/d;
+			if(Error < 0) x = x;
+			if(Error >= 0)
+			{
+				x = x + 1;
+				Error = Error - 1;
+			}
+			SetPixel(x, y, color);
+			y = y - 1;
+		}
+		return;
+	}
+	
+	x = std::min(x1, x2);
+	if(x == x1) { y = y1, DY = y2 - y1; }
+	else { y = y2, DY = y1 - y2; }
+
+	d = (double)DY/(std::min(x1, x2) - std::max(x1, x2));
+
+
+	if(d < -1.0f)
+	{
+		
+		int sign = 1;
+		if(y == std::max(y1, y2)) sign = -1;
+		else sign = 1;
+		int sign2 = 1;
+		
+		DEBUG(DrawLine);
+		for(int i = 0; i <= std::abs(deltay); i++)
+		{
+			Error = Error + 1.0/d;
+			if(Error < 0) x = x;
+			if(Error >= 0)
+			{
+				x = x + 1;
+				Error = Error - 1;
+			}
+			SetPixel(x, y, color);
+			y = y + sign * 1;
+		}
+		return;
+	}
+
+	if(d >= -1.0f && d < 0.0f)
+	{
+		
+		int sign;
+		
+		y = std::max(y1, y2);
+		if(y == y1) { x = x1; (x1 > x2) ? sign = -1:sign = 1; }
+		else { x = x2; (x2 > x1) ? sign = -1:sign = 1; }		
+
+		for(int i = 0; i <= std::abs(deltax); i++)
+		{
+			Error = Error - d;
+			if(Error < 0) y = y;
+			if(Error >= 0)
+			{
+				y = y - 1;
+				Error = Error - 1;
+			}
+			SetPixel(x, y, color);
+			x = x + sign * 1;
+		}
+		return;
+	}
+	
+}
+
+
+*/
+
